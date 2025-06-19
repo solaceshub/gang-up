@@ -1,0 +1,48 @@
+local enabled = false
+local UserInputService = game:GetService("UserInputService")
+local player = game.Players.LocalPlayer
+local returnPos = nil
+local cooldown = 0.75
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+    if input.KeyCode == Enum.KeyCode.E then
+        enabled = not enabled
+        print("Auto TP is now " .. (enabled and "ON" or "OFF"))
+    elseif input.KeyCode == Enum.KeyCode.T then
+        local char = player.Character or player.CharacterAdded:Wait()
+        local hrp = char:FindFirstChild("HumanoidRootPart")
+        if hrp then
+            returnPos = hrp.CFrame
+            enabled = true
+            print("✅ Return position set & auto TP enabled.")
+        end
+    end
+end)
+
+task.spawn(function()
+    while true do
+        if enabled and returnPos then
+            local char = player.Character or player.CharacterAdded:Wait()
+            local hrp = char:FindFirstChild("HumanoidRootPart")
+            if hrp then
+                local foundMoney = false
+                for _, v in pairs(workspace.Particles:GetChildren()) do
+                    if v.Name == "Money" and v:FindFirstChild("Part") then
+                        foundMoney = true
+                        hrp.CFrame = v.Part.CFrame
+                        task.wait(0.1) -- slight delay between each money tp
+                    end
+                end
+                if foundMoney then
+                    -- found at least one, so restart loop to check again
+                else
+                    -- no money found, teleport back and wait
+                    hrp.CFrame = returnPos
+                    task.wait(cooldown)
+                end
+            end
+        end
+        task.wait(0.1)
+    end
+end)
