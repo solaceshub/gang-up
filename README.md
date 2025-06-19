@@ -6,3 +6,9 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/solaceshub/gang-up/re
 
 Pizza farm:
 loadstring(game:HttpGet("https://raw.githubusercontent.com/solaceshub/gang-up/refs/heads/main/pizza-farm"))()
+
+Auto deposit:
+loadstring(game:HttpGet("https://raw.githubusercontent.com/solaceshub/gang-up/refs/heads/main/auto-deposit"))()
+
+Cash teleport:
+loadstring(game:HttpGet("https://raw.githubusercontent.com/solaceshub/gang-up/refs/heads/main/cash-tp"))()
